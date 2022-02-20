@@ -1,0 +1,10 @@
+a {
+    text-decoration: none;
+}
+
+a.active {
+    padding-bottom: 3px;
+    border-bottom: 3px solid #000;
+    transition: all ease-in;
+    transition-delay: .5s;
+}
