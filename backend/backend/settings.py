@@ -1,9 +1,10 @@
-from distutils.log import debug
 from pathlib import Path
 from datetime import timedelta
 import environ
 import os
 import dj_database_url
+import django_heroku
+
 
 env = environ.Env(
     # set casting, default value
@@ -142,9 +143,10 @@ USE_TZ = True
 WHITENOISE_USE_FINDERS = True
 
 # Static files (CSS, JavaScript, Images)
-STATIC_URL = "static/"
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATIC_URL = "/static/"
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
+
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
@@ -165,6 +167,4 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 CORS_ALLOW_ALL_ORIGINS = True
 
 
-# import django_heroku
-
-# django_heroku.settings(locals())
+django_heroku.settings(locals())
