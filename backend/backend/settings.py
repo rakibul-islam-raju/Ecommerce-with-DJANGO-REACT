@@ -138,14 +138,14 @@ USE_TZ = True
 WHITENOISE_USE_FINDERS = True
 
 # Static files (CSS, JavaScript, Images)
-STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_ROOT = BASE_DIR / "backend/staticfiles"
 STATIC_URL = "/static/"
 # STATICFILES_DIRS = [
 #     BASE_DIR / "backend/static/",
 # ]
 
 MEDIA_URL = "/media/"
-MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_ROOT = BASE_DIR / "backend/media"
 
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
