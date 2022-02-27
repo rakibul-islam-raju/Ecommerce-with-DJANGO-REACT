@@ -2,8 +2,9 @@ from pathlib import Path
 from datetime import timedelta
 import environ
 import os
-import dj_database_url
-import django_heroku
+
+# import dj_database_url
+# import django_heroku
 
 
 env = environ.Env(
@@ -38,7 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
-    "whitenoise.runserver_nostatic",  # whitenoise
+    # "whitenoise.runserver_nostatic",  # whitenoise
     "django.contrib.staticfiles",
     # third_party
     "rest_framework",
@@ -70,7 +71,7 @@ SIMPLE_JWT = {
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",  # whitenoise
+    # "whitenoise.middleware.WhiteNoiseMiddleware",  # whitenoise
     "django.contrib.sessions.middleware.SessionMiddleware",
     "corsheaders.middleware.CorsMiddleware",  # cors middleware
     "django.middleware.common.CommonMiddleware",
