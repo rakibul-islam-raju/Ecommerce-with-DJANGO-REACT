@@ -1,5 +1,5 @@
 asgiref==3.4.1
-black==21.11b1
+black==22.1.0
 certifi==2021.10.8
 charset-normalizer==2.0.12
 click==8.0.3
@@ -13,7 +13,6 @@ django-filter==21.1
 django-heroku==0.3.1
 djangorestframework==3.12.4
 djangorestframework-simplejwt==5.0.0
-drf-yasg==1.20.0
 gunicorn==20.1.0
 idna==3.3
 inflection==0.5.1
