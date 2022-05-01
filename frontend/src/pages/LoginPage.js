@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Row, Col, Form, Button } from "react-bootstrap";
+import React, { useState } from "react";
+import { Form, Button } from "react-bootstrap";
 import Message from "../components/Message";
 import FormContainer from "../components/FormContainer";
 import Loader from "../components/Loader";
@@ -21,8 +21,7 @@ const LoginPage = () => {
 
 	const submitHandler = async (e) => {
 		e.preventDefault();
-		await dispatch(login(email, password));
-		navigate(redirect);
+		dispatch(login(email, password));
 	};
 
 	return (

@@ -9,7 +9,7 @@ const Layout = () => {
 		<>
 			<Header />
 			<main className="pb-4 mt-3">
-				<Container>
+				<Container fluid>
 					<Outlet />
 				</Container>
 			</main>

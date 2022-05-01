@@ -60,4 +60,4 @@ class Review(BaseModel):
         ordering = ["-id"]
 
     def __str__(self):
-        return self.name
+        return self.product.name

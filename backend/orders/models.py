@@ -23,6 +23,9 @@ class Order(BaseModel):
     is_delivered = models.BooleanField(default=False)
     delivered_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ["-id"]
+
     def __str__(self):
         return str(self.created_at)
 
@@ -37,6 +40,9 @@ class OrderItem(models.Model):
     price = models.DecimalField(max_digits=8, decimal_places=2)
     image = models.ImageField(upload_to="OrderItems/", blank=True, null=True)
 
+    class Meta:
+        ordering = ["-id"]
+
     def __str__(self):
         return self.name
 
@@ -50,6 +56,9 @@ class ShippingAddress(models.Model):
     region = models.CharField(max_length=200)
     postal_code = models.CharField(max_length=200)
     country = models.CharField(max_length=200)
+
+    class Meta:
+        ordering = ["-id"]
 
     def __str__(self):
         return self.address
