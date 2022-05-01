@@ -36,7 +36,6 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
-    # "whitenoise.runserver_nostatic",  # whitenoise
     "django.contrib.staticfiles",
     # third_party
     "rest_framework",
@@ -61,8 +60,13 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(days=30),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=90),
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
+    "UPDATE_LAST_LOGIN": False,
+    "SLIDING_TOKEN_LIFETIME": timedelta(minutes=5),
+    "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
 }
 
 
@@ -140,10 +144,9 @@ WHITENOISE_USE_FINDERS = True
 # Static files (CSS, JavaScript, Images)
 STATIC_ROOT = BASE_DIR / "backend/staticfiles"
 STATIC_URL = "/static/"
-# STATICFILES_DIRS = [
-#     BASE_DIR / "backend/static/",
-# ]
-
+STATICFILES_DIRS = [
+    BASE_DIR / "backend/static/",
+]
 MEDIA_URL = "/media/"
 MEDIA_ROOT = BASE_DIR / "backend/media"
 
