@@ -1,5 +1,5 @@
 from django.db.models import Avg
-
+from django.db.models import Q
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 from rest_framework.generics import (
     ListAPIView,
@@ -86,7 +86,7 @@ class ProductListCreateView(ListCreateAPIView):
     def get_queryset(self):
         keyword = self.request.GET.get("keyword")
         if keyword:
-            queryset = Product.objects.filter(name__icontains=keyword)
+            queryset = Product.objects.filter(Q(name__icontains=keyword))
         else:
             queryset = Product.objects.all()
 

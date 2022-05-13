@@ -51,7 +51,11 @@ const TopRatedProducts = () => {
 				<>
 					<Carousel infinite={true} responsive={responsive}>
 						{products?.map((product) => (
-							<ProductItem key={product.id} product={product} />
+							<ProductItem
+								key={product.id}
+								product={product}
+								classes="top-rated-item"
+							/>
 						))}
 					</Carousel>
 				</>

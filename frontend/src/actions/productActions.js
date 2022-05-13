@@ -30,10 +30,11 @@ export const listProducts =
 		try {
 			dispatch({ type: PRODUCT_LIST_REQUEST });
 
-			const { data } = await axios.get(
-				`${REACT_API_URL}/shop/products${keyword}`,
-				config
-			);
+			const url = keyword
+				? `${REACT_API_URL}/shop/products?keyword=${keyword}`
+				: `${REACT_API_URL}/shop/products`;
+
+			const { data } = await axios.get(url, config);
 
 			dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
 		} catch (error) {

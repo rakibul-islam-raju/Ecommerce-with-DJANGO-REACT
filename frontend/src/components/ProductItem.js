@@ -1,12 +1,12 @@
 import React from "react";
-import { Card, Col } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Rating from "react-rating";
 
-const ProductItem = ({ product }) => {
+const ProductItem = ({ product, classes }) => {
 	return (
 		<Link to={`/product/${product.id}`}>
-			<Card>
+			<Card className={`${classes} product-card`}>
 				<Card.Img variant="top" src={product.image} />
 				<Card.Body>
 					<Card.Title>{product.name}</Card.Title>

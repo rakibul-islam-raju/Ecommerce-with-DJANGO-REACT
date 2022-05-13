@@ -8,3 +8,16 @@ a.active {
     transition: all ease-in;
     transition-delay: .5s;
 }
+
+.top-rated-item {
+    margin: 0px 10px;
+}
+
+.top-rated-item img,
+.product-card img {
+    height: 250px;
+}
+
+.product-card {
+    margin-bottom: 20px;
+}
