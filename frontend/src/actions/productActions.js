@@ -1,5 +1,4 @@
 import { REACT_API_URL } from "../utilities/utils";
-import axios from "axios";
 import {
 	PRODUCT_LIST_REQUEST,
 	PRODUCT_LIST_SUCCESS,
@@ -23,6 +22,10 @@ import {
 	PRODUCT_RELATED_SUCCESS,
 	PRODUCT_RELATED_FAIL,
 } from "../constants/productConstants";
+import {
+	axiosPrivateInstance,
+	axiosPublicInstance,
+} from "../utilities/axiosInstance";
 
 export const listProducts =
 	(config, keyword = "") =>
@@ -34,7 +37,9 @@ export const listProducts =
 				? `${REACT_API_URL}/shop/products?keyword=${keyword}`
 				: `${REACT_API_URL}/shop/products`;
 
-			const { data } = await axios.get(url, config);
+			const { data } = config
+				? await axiosPrivateInstance.get(url)
+				: await axiosPublicInstance.get(url);
 
 			dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
 		} catch (error) {
@@ -51,10 +56,10 @@ export const listProducts =
 export const detailsProduct = (id, config) => async (dispatch) => {
 	try {
 		dispatch({ type: PRODUCT_DETAILS_REQUEST });
-		const { data } = await axios.get(
-			`${REACT_API_URL}/shop/products/${parseInt(id)}`,
-			config
-		);
+		const url = `${REACT_API_URL}/shop/products/${parseInt(id)}`;
+		const { data } = config
+			? await axiosPrivateInstance.get(url)
+			: await axiosPublicInstance.get(url);
 
 		dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data });
 	} catch (error) {
@@ -72,20 +77,8 @@ export const deleteProduct = (id) => async (dispatch, getState) => {
 	try {
 		dispatch({ type: PRODUCT_DELETE_REQUEST });
 
-		const {
-			userLogin: { userInfo },
-		} = getState();
-
-		const config = {
-			headers: {
-				"Content-type": "application/json",
-				Authorization: `Bearer ${userInfo.token}`,
-			},
-		};
-
-		await axios.delete(
-			`${REACT_API_URL}/shop/products/${parseInt(id)}`,
-			config
+		await axiosPrivateInstance.delete(
+			`${REACT_API_URL}/shop/products/${parseInt(id)}`
 		);
 
 		dispatch({ type: PRODUCT_DELETE_SUCCESS });
@@ -104,18 +97,10 @@ export const createProduct = (product) => async (dispatch, getState) => {
 	try {
 		dispatch({ type: PRODUCT_CREATE_REQUEST });
 
-		const {
-			userLogin: { userInfo },
-		} = getState();
-
-		const config = {
-			headers: {
-				"Content-type": "application/json",
-				Authorization: `Bearer ${userInfo.token}`,
-			},
-		};
-
-		await axios.post(`${REACT_API_URL}/shop/products`, product, config);
+		await axiosPrivateInstance.post(
+			`${REACT_API_URL}/shop/products`,
+			product
+		);
 
 		dispatch({ type: PRODUCT_CREATE_SUCCESS });
 	} catch (error) {
@@ -133,27 +118,14 @@ export const editProduct = (id, formData) => async (dispatch, getState) => {
 	try {
 		dispatch({ type: PRODUCT_EDIT_REQUEST });
 
-		const {
-			userLogin: { userInfo },
-		} = getState();
-
-		const config = {
-			headers: {
-				"Content-type": "application/json",
-				Authorization: `Bearer ${userInfo.token}`,
-			},
-		};
-
-		const { data } = await axios.patch(
+		const { data } = await axiosPrivateInstance.patch(
 			`${REACT_API_URL}/shop/products/${parseInt(id)}`,
-			formData,
-			config
+			formData
 		);
 
 		dispatch({ type: PRODUCT_EDIT_SUCCESS, payload: data });
 
 		// dispatch product details
-		// update product detail in the state
 		dispatch({ type: PRODUCT_DETAILS_SUCCESS, payload: data });
 	} catch (error) {
 		dispatch({
@@ -170,7 +142,9 @@ export const topProducts = () => async (dispatch) => {
 	try {
 		dispatch({ type: PRODUCT_TOP_REQUEST });
 
-		const { data } = await axios.get(`${REACT_API_URL}/shop/products/top`);
+		const { data } = await axiosPublicInstance.get(
+			`${REACT_API_URL}/shop/products/top`
+		);
 
 		dispatch({ type: PRODUCT_TOP_SUCCESS, payload: data });
 	} catch (error) {
@@ -188,7 +162,7 @@ export const relatedProducts = (categoryId) => async (dispatch) => {
 	try {
 		dispatch({ type: PRODUCT_RELATED_REQUEST });
 
-		const { data } = await axios.get(
+		const { data } = await axiosPublicInstance.get(
 			`${REACT_API_URL}/shop/products/related/${categoryId}`
 		);
 

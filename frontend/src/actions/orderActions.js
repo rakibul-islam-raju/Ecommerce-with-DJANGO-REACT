@@ -1,4 +1,3 @@
-import axios from "axios";
 import { REACT_API_URL } from "../utilities/utils";
 import {
 	ORDER_CREATE_REQUEST,
@@ -19,30 +18,18 @@ import {
 	ORDER_DELIVER_REQUEST,
 	ORDER_DELIVER_SUCCESS,
 	ORDER_DELIVER_FAIL,
-	ORDER_DELIVER_RESET,
 } from "../constants/orderConstants";
 import { CART_CLEAR_ITEMS } from "../constants/cartConstants";
+import { axiosPrivateInstance } from "../utilities/axiosInstance";
 
 export const createOrder = (order) => async (dispatch, getState) => {
 	try {
 		dispatch({ type: ORDER_CREATE_REQUEST });
-		// get user token from state
-		const {
-			userLogin: { userInfo },
-		} = getState();
-		// request config
-		const config = {
-			headers: {
-				"Content-type": "application/json",
-				Authorization: `Bearer ${userInfo.token}`,
-			},
-		};
+
 		// get user details
-		console.log("order action ===>>", order);
-		const { data } = await axios.post(
+		const { data } = await axiosPrivateInstance.post(
 			`${REACT_API_URL}/orders/order`,
-			order,
-			config
+			order
 		);
 		// create order
 		dispatch({ type: ORDER_CREATE_SUCCESS, payload: data });
@@ -64,21 +51,9 @@ export const createOrder = (order) => async (dispatch, getState) => {
 export const getOrderDetail = (id) => async (dispatch, getState) => {
 	try {
 		dispatch({ type: ORDER_DETAIL_REQUEST });
-		// get user token from state
-		const {
-			userLogin: { userInfo },
-		} = getState();
-		// request config
-		const config = {
-			headers: {
-				"Content-type": "application/json",
-				Authorization: `Bearer ${userInfo.token}`,
-			},
-		};
 		// get user details
-		const { data } = await axios.get(
-			`${REACT_API_URL}/orders/order/${id}`,
-			config
+		const { data } = await axiosPrivateInstance.get(
+			`${REACT_API_URL}/orders/order/${id}`
 		);
 		// create order
 		dispatch({ type: ORDER_DETAIL_SUCCESS, payload: data });
@@ -96,22 +71,10 @@ export const getOrderDetail = (id) => async (dispatch, getState) => {
 export const payOrder = (id, paymentResult) => async (dispatch, getState) => {
 	try {
 		dispatch({ type: ORDER_PAY_REQUEST });
-		// get user token from state
-		const {
-			userLogin: { userInfo },
-		} = getState();
-		// request config
-		const config = {
-			headers: {
-				"Content-type": "application/json",
-				Authorization: `Bearer ${userInfo.token}`,
-			},
-		};
 		// get user details
-		const { data } = await axios.patch(
+		const { data } = await axiosPrivateInstance.patch(
 			`${REACT_API_URL}/orders/order/${id}`,
-			{ is_paid: true },
-			config
+			{ is_paid: true }
 		);
 		// create order
 		dispatch({ type: ORDER_PAY_SUCCESS, payload: data });
@@ -129,22 +92,10 @@ export const payOrder = (id, paymentResult) => async (dispatch, getState) => {
 export const deliverOrder = (id) => async (dispatch, getState) => {
 	try {
 		dispatch({ type: ORDER_DELIVER_REQUEST });
-		// get user token from state
-		const {
-			userLogin: { userInfo },
-		} = getState();
-		// request config
-		const config = {
-			headers: {
-				"Content-type": "application/json",
-				Authorization: `Bearer ${userInfo.token}`,
-			},
-		};
 		// get user details
-		const { data } = await axios.patch(
+		const { data } = await axiosPrivateInstance.patch(
 			`${REACT_API_URL}/orders/order/${id}`,
-			{ is_delivered: true },
-			config
+			{ is_delivered: true }
 		);
 		// create order
 		dispatch({ type: ORDER_DELIVER_SUCCESS, payload: data });
@@ -164,21 +115,9 @@ export const myOrderList =
 	async (dispatch, getState) => {
 		try {
 			dispatch({ type: ORDER_MY_LIST_REQUEST });
-			// get user token from state
-			const {
-				userLogin: { userInfo },
-			} = getState();
-			// request config
-			const config = {
-				headers: {
-					"Content-type": "application/json",
-					Authorization: `Bearer ${userInfo.token}`,
-				},
-			};
 			// get user details
-			const { data } = await axios.get(
-				`${REACT_API_URL}/orders/order${keyword}`,
-				config
+			const { data } = await axiosPrivateInstance.get(
+				`${REACT_API_URL}/orders/order${keyword}`
 			);
 			// create order
 			dispatch({ type: ORDER_MY_LIST_SUCCESS, payload: data });
@@ -198,21 +137,9 @@ export const listOrders =
 	async (dispatch, getState) => {
 		try {
 			dispatch({ type: ORDER_LIST_REQUEST });
-			// get user token from state
-			const {
-				userLogin: { userInfo },
-			} = getState();
-			// request config
-			const config = {
-				headers: {
-					"Content-type": "application/json",
-					Authorization: `Bearer ${userInfo.token}`,
-				},
-			};
 			// get user details
-			const { data } = await axios.get(
-				`${REACT_API_URL}/orders/order/all${keyword}`,
-				config
+			const { data } = await axiosPrivateInstance.get(
+				`${REACT_API_URL}/orders/order/all${keyword}`
 			);
 			// create order
 			dispatch({ type: ORDER_LIST_SUCCESS, payload: data });

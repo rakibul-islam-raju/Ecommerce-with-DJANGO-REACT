@@ -1,14 +1,16 @@
 import { REACT_API_URL } from "../utilities/utils";
-import axios from "axios";
 import {
 	CART_ADD_ITEM,
 	CART_REMOVE_ITEM,
 	CART_SAVE_SHIPPING_ADDRESS,
 	CART_SAVE_PAYMENT_METHOD,
 } from "../constants/cartConstants";
+import { axiosPublicInstance } from "../utilities/axiosInstance";
 
 export const addToCart = (id, qty) => async (dispatch, getState) => {
-	const { data } = await axios.get(`${REACT_API_URL}/shop/products/${id}`);
+	const { data } = await axiosPublicInstance.get(
+		`${REACT_API_URL}/shop/products/${id}`
+	);
 	dispatch({
 		type: CART_ADD_ITEM,
 		payload: {

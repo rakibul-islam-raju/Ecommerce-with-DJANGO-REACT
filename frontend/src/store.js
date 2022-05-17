@@ -15,6 +15,7 @@ import { brandListReducer } from "./reducers/brandReducers";
 import { cartReducer } from "./reducers/cartReducers";
 import {
 	userLoginReducer,
+	userTokenReducer,
 	userRegisterReducer,
 	userDetailsReducer,
 	userUpdateProfileReducer,
@@ -54,6 +55,7 @@ const reducer = combineReducers({
 	cart: cartReducer,
 	// user
 	userLogin: userLoginReducer,
+	userToken: userTokenReducer,
 	userRegister: userRegisterReducer,
 	userDetails: userDetailsReducer,
 	userUpdateProfile: userUpdateProfileReducer,

@@ -1,7 +1,8 @@
 import { REACT_API_URL } from "../utilities/utils";
-import axios from "axios";
 import {
 	USER_LOGIN_REQUEST,
+	USER_AUTH_TOKEN_SUCCESS,
+	USER_AUTH_TOKEN_RESET,
 	USER_LOGIN_SUCCESS,
 	USER_LOGIN_FAIL,
 	USER_LOGOUT,
@@ -27,6 +28,23 @@ import {
 	USER_BAN_FAIL,
 } from "../constants/userConstants";
 import { ORDER_MY_LIST_RESET } from "../constants/orderConstants";
+import {
+	axiosPrivateInstance,
+	axiosPublicInstance,
+} from "../utilities/axiosInstance";
+
+export const tokenUpdate = (data) => async (dispatch) => {
+	try {
+		dispatch({
+			type: USER_AUTH_TOKEN_SUCCESS,
+			payload: data,
+		});
+		// save userInfo in local storage
+		localStorage.setItem("userInfo", JSON.stringify(data));
+	} catch (error) {
+		dispatch(logout());
+	}
+};
 
 export const login = (email, password) => async (dispatch) => {
 	try {
@@ -38,7 +56,7 @@ export const login = (email, password) => async (dispatch) => {
 			},
 		};
 		// axios POST method
-		const { data } = await axios.post(
+		const { data } = await axiosPublicInstance.post(
 			`${REACT_API_URL}/auth/login`,
 			{ email, password },
 			config
@@ -61,6 +79,7 @@ export const login = (email, password) => async (dispatch) => {
 export const logout = () => (dispatch) => {
 	localStorage.removeItem("userInfo");
 	dispatch({ type: USER_LOGOUT });
+	dispatch({ type: USER_AUTH_TOKEN_RESET });
 	dispatch({ type: USER_DETAILS_RESET });
 	dispatch({ type: ORDER_MY_LIST_RESET });
 	dispatch({ type: USER_LIST_RESET });
@@ -70,17 +89,11 @@ export const register =
 	(firstName, lastName, email, password) => async (dispatch) => {
 		try {
 			dispatch({ type: USER_REGISTER_REQUEST });
-			// POST methd header config
-			const config = {
-				headers: {
-					"Content-type": "application/json",
-				},
-			};
+
 			// axios POST method
-			const { data } = await axios.post(
+			const { data } = await axiosPublicInstance.post(
 				`${REACT_API_URL}/auth/registration`,
-				{ first_name: firstName, last_name: lastName, email, password },
-				config
+				{ first_name: firstName, last_name: lastName, email, password }
 			);
 			// dispatch USER_REGISTER_SUCCESS
 			dispatch({ type: USER_REGISTER_SUCCESS, payload: data });
@@ -102,21 +115,9 @@ export const register =
 export const getUserDetails = (id) => async (dispatch, getState) => {
 	try {
 		dispatch({ type: USER_DETAILS_REQUEST });
-		// get user token from state
-		const {
-			userLogin: { userInfo },
-		} = getState();
-		// request config
-		const config = {
-			headers: {
-				"Content-type": "application/json",
-				Authorization: `Bearer ${userInfo.token}`,
-			},
-		};
 		// get user details
-		const { data } = await axios.get(
-			`${REACT_API_URL}/users/profile/${id}`,
-			config
+		const { data } = await axiosPrivateInstance.get(
+			`${REACT_API_URL}/users/profile/${id}`
 		);
 		// dispatch USER_REGISTER_SUCCESS
 		dispatch({ type: USER_DETAILS_SUCCESS, payload: data });
@@ -134,22 +135,10 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
 export const updateUserProfile = (id, user) => async (dispatch, getState) => {
 	try {
 		dispatch({ type: USER_UPDATE_PROFILE_REQUEST });
-		// get user token from state
-		const {
-			userLogin: { userInfo },
-		} = getState();
-		// request config
-		const config = {
-			headers: {
-				"Content-type": "application/json",
-				Authorization: `Bearer ${userInfo.token}`,
-			},
-		};
 		// get user details
-		const { data } = await axios.put(
+		const { data } = await axiosPrivateInstance.put(
 			`${REACT_API_URL}/users/profile/${id}`,
-			user,
-			config
+			user
 		);
 		// update user
 		dispatch({ type: USER_UPDATE_PROFILE_SUCCESS, payload: data });
@@ -173,21 +162,9 @@ export const listUsers =
 	async (dispatch, getState) => {
 		try {
 			dispatch({ type: USER_LIST_REQUEST });
-			// get user token from state
-			const {
-				userLogin: { userInfo },
-			} = getState();
-			// request config
-			const config = {
-				headers: {
-					"Content-type": "application/json",
-					Authorization: `Bearer ${userInfo.token}`,
-				},
-			};
 			// get user details
-			const { data } = await axios.get(
-				`${REACT_API_URL}/users${keyword}`,
-				config
+			const { data } = await axiosPrivateInstance.get(
+				`${REACT_API_URL}/users${keyword}`
 			);
 			// update user
 			dispatch({ type: USER_LIST_SUCCESS, payload: data });
@@ -206,22 +183,10 @@ export const makeAdminUser =
 	(id, adminStatus) => async (dispatch, getState) => {
 		try {
 			dispatch({ type: USER_MAKE_ADMIN_REQUEST });
-			// get user token from state
-			const {
-				userLogin: { userInfo },
-			} = getState();
-			// request config
-			const config = {
-				headers: {
-					"Content-type": "application/json",
-					Authorization: `Bearer ${userInfo.token}`,
-				},
-			};
 			// get user details
-			const { data } = await axios.patch(
+			const { data } = await axiosPrivateInstance.patch(
 				`${REACT_API_URL}/users/${parseInt(id)}`,
-				{ is_staff: adminStatus },
-				config
+				{ is_staff: adminStatus }
 			);
 			// update user
 			dispatch({ type: USER_MAKE_ADMIN_SUCCESS, payload: data });
@@ -239,22 +204,10 @@ export const makeAdminUser =
 export const banUser = (id, activeStatus) => async (dispatch, getState) => {
 	try {
 		dispatch({ type: USER_BAN_REQUEST });
-		// get user token from state
-		const {
-			userLogin: { userInfo },
-		} = getState();
-		// request config
-		const config = {
-			headers: {
-				"Content-type": "application/json",
-				Authorization: `Bearer ${userInfo.token}`,
-			},
-		};
 		// get user details
-		const { data } = await axios.patch(
+		const { data } = await axiosPrivateInstance.patch(
 			`${REACT_API_URL}/users/${parseInt(id)}`,
-			{ is_active: activeStatus },
-			config
+			{ is_active: activeStatus }
 		);
 		// update user
 		dispatch({ type: USER_BAN_SUCCESS, payload: data });
