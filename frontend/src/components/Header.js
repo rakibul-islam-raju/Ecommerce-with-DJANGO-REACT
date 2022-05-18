@@ -38,6 +38,9 @@ const Header = () => {
 							// navbarScroll
 						>
 							<SearchBox />
+							<Nav.Link as={Link} to="/shop">
+								<i class="fas fa-shopping-bag"></i> Shop{" "}
+							</Nav.Link>
 							<Nav.Link as={Link} to="/cart">
 								<i className="fas fa-shopping-cart"></i> Cart{" "}
 								<Badge bg="danger">

@@ -22,6 +22,7 @@ import ProductListPage from "./pages/Dashboard/ProductListPage";
 import ProductCreatePage from "./pages/Dashboard/ProductCreatePage";
 import ProductEditPage from "./pages/Dashboard/ProductEditPage";
 import OrderListPage from "./pages/Dashboard/OrderListPage";
+import ShopPage from "./pages/ShopPage";
 
 const App = () => {
 	return (
@@ -31,6 +32,7 @@ const App = () => {
 					<Route element={<Layout />}>
 						<Route index element={<HomePage />} />
 						<Route path="cart" element={<CartPage />} />
+						<Route path="shop" element={<ShopPage />} />
 						<Route
 							path="product/:productId"
 							element={<ProductDetailPage />}

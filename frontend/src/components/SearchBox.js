@@ -1,20 +1,15 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Form } from "react-bootstrap";
-import { listProducts } from "../actions/productActions";
-import { useDispatch, useSelector } from "react-redux";
 
 const SearchBox = () => {
 	const [keyword, setKeyword] = useState("");
 
 	const navigate = useNavigate();
-	const dispatch = useDispatch();
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		let _;
-		dispatch(listProducts(_, keyword));
-		// navigate(`/?keyword=${keyword}`);
+		navigate("/shop", { state: { keyword } });
 	};
 
 	return (
