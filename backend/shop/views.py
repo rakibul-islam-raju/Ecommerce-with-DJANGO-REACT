@@ -7,10 +7,10 @@ from rest_framework.generics import (
     RetrieveUpdateDestroyAPIView,
 )
 
-from .models import Category, Brand, Product, Review
+from .models import Category, SubCategory, Product, Review
 from .serializers import (
     CategorySerializer,
-    BrandSerializer,
+    SubCategorySerializer,
     ProductSerializer,
     ProductCreateSerializer,
     ReviewCreateSerializer,
@@ -34,9 +34,9 @@ class CategoryListCreateView(ListCreateAPIView):
         return super(CategoryListCreateView, self).get_permissions()
 
 
-class BrandListCreateView(ListCreateAPIView):
-    queryset = Brand.objects.filter(is_active=True)
-    serializer_class = BrandSerializer
+class SubCategoryListCreateView(ListCreateAPIView):
+    queryset = SubCategory.objects.filter(is_active=True)
+    serializer_class = SubCategorySerializer
 
     def perform_create(self, serializer):
         serializer.save(added_by=self.request.user)
@@ -47,7 +47,7 @@ class BrandListCreateView(ListCreateAPIView):
         else:
             self.permission_classes = [IsAdminUser]
 
-        return super(BrandListCreateView, self).get_permissions()
+        return super(SubCategoryListCreateView, self).get_permissions()
 
 
 class CategoryDetailView(RetrieveUpdateDestroyAPIView):

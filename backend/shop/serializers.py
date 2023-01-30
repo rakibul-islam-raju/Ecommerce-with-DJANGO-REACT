@@ -3,7 +3,7 @@ from rest_framework import serializers
 from orders.models import Order, OrderItem
 from core.serializers import UserSerializer
 
-from .models import Category, Brand, Product, Review
+from .models import Category, SubCategory, Product, Review
 
 
 # Category serializer
@@ -13,10 +13,10 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-# Brand serializer
-class BrandSerializer(serializers.ModelSerializer):
+# SubCategory serializer
+class SubCategorySerializer(serializers.ModelSerializer):
     class Meta:
-        model = Brand
+        model = SubCategory
         fields = "__all__"
 
 
@@ -61,9 +61,11 @@ class ProductCreateSerializer(serializers.ModelSerializer):
         model = Product
         fields = [
             "name",
-            "price",
+            "slug",
+            "actual_price",
+            "offer_price",
             "image",
-            "brand",
+            "sub_category",
             "category",
             "description",
             "rating",
@@ -74,7 +76,7 @@ class ProductCreateSerializer(serializers.ModelSerializer):
 
 # Product serializer
 class ProductSerializer(serializers.ModelSerializer):
-    brand = BrandSerializer()
+    sub_category = SubCategorySerializer()
     category = CategorySerializer()
 
     class Meta:
@@ -82,9 +84,11 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "name",
-            "price",
+            "slug",
+            "actual_price",
+            "offer_price",
             "image",
-            "brand",
+            "sub_category",
             "category",
             "description",
             "in_stock",
@@ -94,4 +98,5 @@ class ProductSerializer(serializers.ModelSerializer):
             "updated_at",
             "total_reviews",
             "rating",
+            "current_price",
         ]
